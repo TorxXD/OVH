@@ -1,0 +1,30 @@
+name: JAIAHWBEYBF Discord Bot
+
+on:
+  push:
+    branches:
+      - main # Cambia a tu rama principal si es diferente
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21' # Usar la misma versión que en go.mod
+
+      - name: Download dependencies
+        run: go mod tidy
+      
+      - name: Build
+        run: go build -o bot .
+
+      - name: Run Bot
+        run: ./bot
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }} #Pasamos el token como variable de entorno
